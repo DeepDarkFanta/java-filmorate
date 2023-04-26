@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@RequestMapping("/film")
+@RequestMapping("/films")
 public class FilmController {
     private final FilmService filmService;
 

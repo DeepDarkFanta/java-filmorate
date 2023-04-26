@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(FilmController.class)
 @AutoConfigureMockMvc
 class FilmControllerTest {
-    private final String uRL = "/film";
+    private final String uRL = "/films";
 
     @MockBean
     private FilmController filmController;

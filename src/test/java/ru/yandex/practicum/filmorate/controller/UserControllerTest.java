@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
 class UserControllerTest {
-    private final String uRL = "/user";
+    private final String uRL = "/users";
 
     @MockBean
     private UserController userController;
