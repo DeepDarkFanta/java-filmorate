@@ -58,6 +58,6 @@ public class UserController {
 
     @ExceptionHandler
     private ResponseEntity<String> handleExceptionRepo(ValidationException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
