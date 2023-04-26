@@ -1,16 +1,18 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
+@Builder
 public class User {
-
     private int id;
 
-    @Email(message = "email cannot be empty and must contain the @ symbol")
+    @NotBlank(message = "email cannot be empty")
+    @Email(message = "must contain the @ symbol")
     private String email;
 
     @NotBlank(message = "login cannot be empty and contain spaces")
@@ -18,6 +20,6 @@ public class User {
 
     private String name;
 
-    @Future(message = "date of birth cannot be in the future")
+    @Past(message = "date of birth cannot be in the future")
     private LocalDate birthday;
 }

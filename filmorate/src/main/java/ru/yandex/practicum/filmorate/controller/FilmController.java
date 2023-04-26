@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.util.exception.UserAndFilmErrorResponse;
+import ru.yandex.practicum.filmorate.util.exception.ValidationException;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 
 @RestController
 @Slf4j
@@ -56,5 +55,10 @@ public class FilmController {
         log.warn(response.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<String> handleExceptionRepo(ValidationException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

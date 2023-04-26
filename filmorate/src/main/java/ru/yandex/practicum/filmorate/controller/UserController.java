@@ -19,23 +19,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
     private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-    /*
-    @Valid не дает опуститься ниже на Service уровень
-    где я бы хотел обработать валидацию через кастомные
-    ошибки, которые потом бы ловил через ExceptionHandler
-    в контроллерах, и отправлял бы более понятные статусы
-    и причину ошибки + логи мог бы сделать.
-    в ТЗ рекомендуется использовать @Valid, но как понимаю
-    то что я хочу сделать нужно без @Valid?
-     */
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
@@ -61,7 +50,7 @@ public class UserController {
 
         UserAndFilmErrorResponse response = new UserAndFilmErrorResponse(error);
 
-        log.warn("validation failed: " + error);
+        log.warn(response.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }

@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.util.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

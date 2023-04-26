@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,7 +18,6 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        //Optional<User> userOptional = Optional.ofNullable(userRepository.addUser(user));
         return userRepository.addUser(user);
     }
 
