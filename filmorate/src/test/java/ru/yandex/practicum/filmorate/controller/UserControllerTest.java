@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
 class UserControllerTest {
-    private final String USER_URL = "/user";
+    private final static String URL = "/user";
 
     @MockBean
     private UserController userController;
@@ -56,7 +56,7 @@ class UserControllerTest {
 
         Mockito.when(userController.addUser(user)).thenReturn(user);
 
-        mvc.perform(post(USER_URL)
+        mvc.perform(post(URL)
                 .content(objectMapper.writeValueAsString(user))
                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -92,7 +92,7 @@ class UserControllerTest {
     }
 
     public void requestSender(User user) throws Exception {
-        mvc.perform(post(USER_URL)
+        mvc.perform(post(URL)
                         .content(objectMapper.writeValueAsString(user))
                         .contentType(APPLICATION_JSON)
                 )
