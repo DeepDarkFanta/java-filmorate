@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(FilmController.class)
 @AutoConfigureMockMvc
 class FilmControllerTest {
-    private final String URL = "/film";
+    private final String FILM_URL = "/film";
 
     @MockBean
     private FilmController filmController;
@@ -53,7 +53,7 @@ class FilmControllerTest {
         Mockito.when(filmController.addFilm(film)).thenReturn(film);
 
         //все поля правильные
-        mvc.perform(post(URL)
+        mvc.perform(post(FILM_URL)
                 .content(objectMapper.writeValueAsString(film))
                 .contentType(APPLICATION_JSON)
                 )
@@ -95,8 +95,9 @@ class FilmControllerTest {
         film.setDuration(-20);
         requestSender(film);
     }
+
     public void requestSender(Film film) throws Exception {
-        mvc.perform(post(URL)
+        mvc.perform(post(FILM_URL)
                         .content(objectMapper.writeValueAsString(film))
                         .contentType(APPLICATION_JSON)
                 )
