@@ -18,8 +18,8 @@ public class FilmRepository {
     private int id;
 
     public Film addFilm(Film film) {
-        film.setId(id);
-        films.put(id++, film);
+        film.setId(++id);
+        films.put(id, film);
         log.info("Film has been added");
         return film;
     }

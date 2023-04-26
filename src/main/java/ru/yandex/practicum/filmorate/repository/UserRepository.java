@@ -21,8 +21,8 @@ public class UserRepository {
         if (user.getName().isEmpty()) {
             user.setName(user.getEmail());
         }
-        user.setId(id);
-        users.put(id++, user);
+        user.setId(++id);
+        users.put(id, user);
         log.info("User has been added");
         return user;
     }
