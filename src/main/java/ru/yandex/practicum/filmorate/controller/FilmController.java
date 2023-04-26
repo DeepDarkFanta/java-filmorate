@@ -58,6 +58,6 @@ public class FilmController {
 
     @ExceptionHandler
     private ResponseEntity<String> handleExceptionRepo(ValidationException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
