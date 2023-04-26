@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(FilmController.class)
 @AutoConfigureMockMvc
 class FilmControllerTest {
-    private final String uRL = "/film";
+    private final String URL = "/film";
 
     @MockBean
     private FilmController filmController;
@@ -36,7 +36,7 @@ class FilmControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void ValidationFieldsWhenRequestComesTest() throws Exception {
+    public void validationFieldsWhenRequestComesTest() throws Exception {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
@@ -53,7 +53,7 @@ class FilmControllerTest {
         Mockito.when(filmController.addFilm(film)).thenReturn(film);
 
         //все поля правильные
-        mvc.perform(post(uRL)
+        mvc.perform(post(URL)
                 .content(objectMapper.writeValueAsString(film))
                 .contentType(APPLICATION_JSON)
                 )
@@ -97,7 +97,7 @@ class FilmControllerTest {
     }
 
     public void requestSender(Film film) throws Exception {
-        mvc.perform(post(uRL)
+        mvc.perform(post(URL)
                         .content(objectMapper.writeValueAsString(film))
                         .contentType(APPLICATION_JSON)
                 )
