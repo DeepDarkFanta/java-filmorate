@@ -18,7 +18,7 @@ public class UserRepository {
     private int id;
 
     public User addUser(User user) {
-        if (user.getName().isEmpty()) {
+        if (user.getName() == null || user.getName().isEmpty()) {
             user.setName(user.getEmail());
         }
         user.setId(++id);
