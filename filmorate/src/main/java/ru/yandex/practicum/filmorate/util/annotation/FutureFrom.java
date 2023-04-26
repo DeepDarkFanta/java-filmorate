@@ -7,10 +7,6 @@ import java.lang.annotation.*;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 
-
-/* не понимаю почему не работает кастомная аннотация с валидацией((
-пропускает не подходящую дату
- */
 @Target( { FIELD, PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
