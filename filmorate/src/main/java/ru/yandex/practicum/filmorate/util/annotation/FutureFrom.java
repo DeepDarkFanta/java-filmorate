@@ -1,13 +1,12 @@
 package ru.yandex.practicum.filmorate.util.annotation;
 
-
 import javax.validation.Constraint;
 import java.lang.annotation.*;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 
-@Target( { FIELD, PARAMETER })
+@Target({ FIELD, PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(validatedBy = FutureFromValidator.class)
