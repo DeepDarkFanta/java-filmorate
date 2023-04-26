@@ -84,7 +84,7 @@ class UserControllerTest {
         //присвоение к имени логина, если имя пустое
         assertThat(user.getName().isEmpty()).isTrue();
         user = userRepository.addUser(user);
-        assertThat(user.getName()).isEqualTo(user.getEmail());
+        assertThat(user.getName()).isEqualTo(user.getLogin());
 
         //др в будущем
         user.setBirthday(LocalDate.of(2300,12,12));
