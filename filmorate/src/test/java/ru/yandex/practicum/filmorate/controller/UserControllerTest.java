@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
 class UserControllerTest {
-    private final String URI = "/user";
+    private final String URL = "/user";
 
     @MockBean
     private UserController userController;
@@ -43,7 +43,7 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void ValidationUserFieldsWhenRequestComesTest() throws Exception{
+    public void ValidationUserFieldsWhenRequestComesTest() throws Exception {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
@@ -56,7 +56,7 @@ class UserControllerTest {
 
         Mockito.when(userController.addUser(user)).thenReturn(user);
 
-        mvc.perform(post(URI)
+        mvc.perform(post(URL)
                 .content(objectMapper.writeValueAsString(user))
                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -92,7 +92,7 @@ class UserControllerTest {
     }
 
     public void requestSender(User user) throws Exception {
-        mvc.perform(post(URI)
+        mvc.perform(post(URL)
                         .content(objectMapper.writeValueAsString(user))
                         .contentType(APPLICATION_JSON)
                 )
