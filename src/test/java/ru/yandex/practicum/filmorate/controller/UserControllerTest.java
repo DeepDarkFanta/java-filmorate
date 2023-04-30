@@ -64,6 +64,7 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(user)));
     }
+
     @Test
     public void userWithEmptyEmailTest() throws Exception {
         user.setEmail("");
@@ -89,10 +90,11 @@ class UserControllerTest {
     }
 
     @Test
-    public void UserBirthdayDateInTheFutureTest() throws Exception {
+    public void userBirthdayDateInTheFutureTest() throws Exception {
         user.setBirthday(LocalDate.of(2300,12,12));
         assertThat(requestSender(user)).isTrue();
     }
+
     public boolean requestSender(User user) throws Exception {
         AtomicBoolean isThrowException = new AtomicBoolean(false);
         mvc.perform(post(uRL)
