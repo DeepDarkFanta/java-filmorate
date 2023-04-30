@@ -7,19 +7,20 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.util.exception.ValidationException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class FilmRepository {
-    private final HashMap<Integer, Film> films;
-    private int id;
+    private final Map<Integer, Film> films;
+    private final AtomicInteger id = new AtomicInteger();
 
     public Film addFilm(Film film) {
-        film.setId(++id);
-        films.put(id, film);
+        film.setId(id.incrementAndGet());
+        films.put(id.get(), film);
         log.info("Film has been added");
         return film;
     }

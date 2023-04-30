@@ -14,7 +14,6 @@ import java.time.LocalDate;
 public class Film {
     private int id;
 
-    @NotNull(message = "name cannot be empty")
     @NotBlank(message = "name cannot be empty")
     private String name;
 

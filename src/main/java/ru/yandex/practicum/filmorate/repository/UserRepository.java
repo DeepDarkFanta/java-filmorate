@@ -7,22 +7,23 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.util.exception.ValidationException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class UserRepository {
-    private final HashMap<Integer, User> users;
-    private int id;
+    private final Map<Integer, User> users;
+    private final AtomicInteger id = new AtomicInteger();
 
     public User addUser(User user) {
         if (user.getName() == null || user.getName().isEmpty()) {
             user.setName(user.getLogin());
         }
-        user.setId(++id);
-        users.put(id, user);
+        user.setId(id.incrementAndGet());
+        users.put(id.get(), user);
         log.info("User has been added");
         return user;
     }

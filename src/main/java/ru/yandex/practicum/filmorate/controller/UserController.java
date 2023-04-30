@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<UserAndFilmErrorResponse> handleException(MethodArgumentNotValidException e) {
+    private ResponseEntity<UserAndFilmErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
         String error = e.getAllErrors().stream()
                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                .collect(Collectors.toList())
@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<UserAndFilmErrorResponse> handleExceptionRepo(ValidationException e) {
+    private ResponseEntity<UserAndFilmErrorResponse> handleNotFoundException(ValidationException e) {
         UserAndFilmErrorResponse response = new UserAndFilmErrorResponse(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
