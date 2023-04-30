@@ -48,6 +48,7 @@ class FilmControllerTest {
     private ObjectMapper objectMapper;
 
     private Film film;
+
     @BeforeEach
     public void createFilm() {
         film = Film.builder()
