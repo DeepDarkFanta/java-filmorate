@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.repository;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class UserRepository {
+public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> users;
-    private final AtomicInteger id = new AtomicInteger();
+    private final AtomicInteger id;
 
+    @Override
     public User addUser(User user) {
         if (user.getName() == null || user.getName().isEmpty()) {
             user.setName(user.getLogin());
@@ -28,6 +30,7 @@ public class UserRepository {
         return user;
     }
 
+    @Override
     public User updateUser(User user) {
         if (users.containsKey(user.getId())) {
             users.put(user.getId(), user);
@@ -38,6 +41,7 @@ public class UserRepository {
         return user;
     }
 
+    @Override
     public List<User> getAllUsers() {
         return new ArrayList<>(users.values());
     }

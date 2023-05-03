@@ -14,10 +14,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FilmRepository {
+public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films;
-    private final AtomicInteger id = new AtomicInteger();
+    private final AtomicInteger id;
 
+    @Override
     public Film addFilm(Film film) {
         film.setId(id.incrementAndGet());
         films.put(id.get(), film);
@@ -25,6 +26,7 @@ public class FilmRepository {
         return film;
     }
 
+    @Override
     public Film updateFilm(Film film) {
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
@@ -35,6 +37,7 @@ public class FilmRepository {
         return film;
     }
 
+    @Override
     public List<Film> getListFilms() {
         return new ArrayList<>(films.values());
     }

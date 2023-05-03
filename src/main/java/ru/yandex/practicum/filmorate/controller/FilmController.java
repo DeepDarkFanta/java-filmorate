@@ -42,7 +42,7 @@ public class FilmController {
         return filmService.getAllFilms();
     }
 
-    @ExceptionHandler
+   /* @ExceptionHandler
     private ResponseEntity<UserAndFilmErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
         String error = e.getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -60,5 +60,5 @@ public class FilmController {
     private ResponseEntity<UserAndFilmErrorResponse> handleNotFoundException(ValidationException e) {
         UserAndFilmErrorResponse response = new UserAndFilmErrorResponse(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
+    }*/
 }
