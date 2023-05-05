@@ -1,23 +1,26 @@
 package ru.yandex.practicum.filmorate.repository;
 
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.util.exception.ValidationException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> users;
+
     private final AtomicInteger id;
+
+    @Autowired
+    public InMemoryUserStorage() {
+        this.users = new HashMap<>();
+        this.id = new AtomicInteger();
+    }
 
     @Override
     public User addUser(User user) {
@@ -44,5 +47,11 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public List<User> getAllUsers() {
         return new ArrayList<>(users.values());
+    }
+
+    public void checkUserById(int id) {
+        if (!users.containsKey(id)) {
+            throw new ValidationException("There is no such ID user");
+        }
     }
 }
