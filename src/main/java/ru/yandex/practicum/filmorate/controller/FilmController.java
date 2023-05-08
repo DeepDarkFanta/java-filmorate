@@ -35,6 +35,10 @@ public class FilmController {
         return filmService.getAllFilms();
     }
 
+    /*
+    так я же возвращаю ошибку 404 и текст ошибки, зачем еще при этом возвращать обернутого Юзера которого нет?
+    Или мне в добавок к message ошибки еще и прикреплять Optinal<User>?
+     */
     @GetMapping("/{id}")
     public Film getFilmById(@PathVariable int id) {
         return filmService.getFilmById(id);
