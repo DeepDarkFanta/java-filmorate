@@ -2,19 +2,12 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.util.exception.UserAndFilmErrorResponse;
-import ru.yandex.practicum.filmorate.util.exception.ValidationException;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -42,23 +35,28 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @ExceptionHandler
-    private ResponseEntity<UserAndFilmErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
-        String error = e.getAllErrors().stream()
-               .map(DefaultMessageSourceResolvable::getDefaultMessage)
-               .collect(Collectors.toList())
-               .toString();
-
-        UserAndFilmErrorResponse response = new UserAndFilmErrorResponse(error);
-
-        log.warn(response.getMessage());
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Integer id) {
+        return userService.getUserById(id);
     }
 
-    @ExceptionHandler
-    private ResponseEntity<UserAndFilmErrorResponse> handleNotFoundException(ValidationException e) {
-        UserAndFilmErrorResponse response = new UserAndFilmErrorResponse(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.addFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.deleteFriend(id, friendId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public List<User> getFriends(@PathVariable int id) {
+        return userService.getFriends(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.getCommonFriends(id, otherId);
     }
 }

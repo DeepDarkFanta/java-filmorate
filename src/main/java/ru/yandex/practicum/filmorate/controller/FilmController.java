@@ -2,19 +2,12 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.util.exception.UserAndFilmErrorResponse;
-import ru.yandex.practicum.filmorate.util.exception.ValidationException;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -42,23 +35,27 @@ public class FilmController {
         return filmService.getAllFilms();
     }
 
-    @ExceptionHandler
-    private ResponseEntity<UserAndFilmErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
-        String error = e.getAllErrors().stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList())
-                .toString();
-
-        UserAndFilmErrorResponse response = new UserAndFilmErrorResponse(error);
-
-        log.warn(response.getMessage());
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    /*
+    так я же возвращаю ошибку 404 и текст ошибки, зачем еще при этом возвращать обернутого Юзера которого нет?
+    Или мне в добавок к message ошибки еще и прикреплять Optinal<User>?
+     */
+    @GetMapping("/{id}")
+    public Film getFilmById(@PathVariable int id) {
+        return filmService.getFilmById(id);
     }
 
-    @ExceptionHandler
-    private ResponseEntity<UserAndFilmErrorResponse> handleNotFoundException(ValidationException e) {
-        UserAndFilmErrorResponse response = new UserAndFilmErrorResponse(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    @PutMapping("/{id}/like/{userId}")
+    public void likeFilm(@PathVariable int id, @PathVariable int userId) {
+        filmService.likeFilm(id, userId);
+    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void deleteLike(@PathVariable int id, @PathVariable int userId) {
+        filmService.deleteLike(id, userId);
+    }
+
+    @GetMapping("/popular")
+    public List<Film> getTopFilms(@RequestParam(defaultValue = "10", required = false) int count) {
+        return filmService.getTopFilms(count);
     }
 }
