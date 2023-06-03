@@ -25,20 +25,20 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film addFilm(Film film) {
-        film.setId(id.incrementAndGet());
+       /* film.setId(id.incrementAndGet());
         films.put(id.get(), film);
-        log.info("Film has been added");
+        log.info("Film has been added");*/
         return film;
     }
 
     @Override
     public Film updateFilm(Film film) {
-        if (films.containsKey(film.getId())) {
+        /*if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
             log.info("Film has been updated");
         } else {
             throw new ValidationException("There is no such ID film");
-        }
+        }*/
         return film;
     }
 

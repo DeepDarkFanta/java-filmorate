@@ -36,7 +36,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User updateUser(User user) {
         if (users.containsKey(user.getId())) {
-            users.put(user.getId(), user);
+            users.put((int) user.getId(), user);
             log.info("User has been updated");
         } else {
             throw new ValidationException("There is no such ID user");
