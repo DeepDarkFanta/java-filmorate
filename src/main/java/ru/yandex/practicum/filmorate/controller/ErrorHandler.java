@@ -26,12 +26,14 @@ public class ErrorHandler {
                 .toString()
          );
     }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private UserAndFilmErrorResponse handleNotFoundException(ValidationException e) {
         log.warn(e.getMessage());
         return new UserAndFilmErrorResponse(e.getMessage());
     }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private UserAndFilmErrorResponse handleNotFoundExceptionInBase(IndexOutOfBoundsException e) {
