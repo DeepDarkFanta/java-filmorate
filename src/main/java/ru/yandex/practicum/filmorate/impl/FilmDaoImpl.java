@@ -14,7 +14,7 @@ import java.util.List;
 public class FilmDaoImpl implements FilmDao {
     private final JdbcTemplate jdbcTemplate;
 
-    private final static BeanPropertyRowMapper<Film> FILM =
+    private static final BeanPropertyRowMapper<Film> FILM =
             BeanPropertyRowMapper.newInstance(Film.class);
 
     @Autowired
