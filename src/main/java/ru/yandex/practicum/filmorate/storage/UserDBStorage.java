@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 public class UserDBStorage implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
+
     private static final BeanPropertyRowMapper<User> USER =
             BeanPropertyRowMapper.newInstance(User.class);
 

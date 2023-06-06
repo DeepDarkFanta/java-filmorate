@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public class FilmDaoImpl implements FilmDao {
     private final JdbcTemplate jdbcTemplate;
+
     private final BeanPropertyRowMapper<Film> FILM =
             BeanPropertyRowMapper.newInstance(Film.class);
 

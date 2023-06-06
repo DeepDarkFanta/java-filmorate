@@ -24,6 +24,7 @@ public class FilmDBStorage implements FilmStorage {
             BeanPropertyRowMapper.newInstance(Film.class);
 
     private final FilmDao filmDao;
+
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired

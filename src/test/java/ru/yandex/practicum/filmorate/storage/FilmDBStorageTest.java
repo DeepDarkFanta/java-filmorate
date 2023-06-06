@@ -34,17 +34,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Sql({"/sql/schemaTest.sql"})
 @Sql({"/sql/schema.sql"})
 public class FilmDBStorageTest {
     @Autowired
     private final FilmDBStorage filmDBStorage;
+
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private final JdbcTemplate jdbcTemplate;
+
     @Autowired
     private final FilmController filmController;
+
     private Film film;
+
     ObjectMapper objectMapper =
             new ObjectMapper().registerModule(new JavaTimeModule());
 

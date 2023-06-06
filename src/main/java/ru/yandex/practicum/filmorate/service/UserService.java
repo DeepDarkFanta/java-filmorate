@@ -11,6 +11,7 @@ import java.util.*;
 @Service
 public class UserService {
     private final UserDBStorage userDBStorage;
+
     private final UserDaoImpl userDao;
 
     @Autowired

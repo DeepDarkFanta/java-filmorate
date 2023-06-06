@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class Genres {
     private Integer id;
+
     private String name;
 }

@@ -11,6 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class User {
     private long id;
+
     private Set<Integer> friends;
 
     @NotBlank(message = "email cannot be empty")

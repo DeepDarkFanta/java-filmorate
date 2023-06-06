@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
     private final JdbcTemplate jdbcTemplate;
+
     private static final BeanPropertyRowMapper<User> USER =
             BeanPropertyRowMapper.newInstance(User.class);
 

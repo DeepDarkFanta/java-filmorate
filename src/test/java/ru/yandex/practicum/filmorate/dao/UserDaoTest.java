@@ -21,13 +21,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Sql({"/sql/schemaTest.sql"})
 @Sql({"/sql/schema.sql"})
 public class UserDaoTest {
     @Autowired
     private final UserController userController;
+
     @Autowired
     private final JdbcTemplate jdbcTemplate;
     private User user;
+
     private User friend;
 
     private User commonFriend;

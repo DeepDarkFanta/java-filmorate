@@ -12,7 +12,6 @@ import org.springframework.test.context.jdbc.Sql;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.*;
-import ru.yandex.practicum.filmorate.storage.FilmDBStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,14 +23,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Sql({"/sql/schemaTest.sql"})
 @Sql({"/sql/schema.sql"})
 public class FilmDaoTest {
     @Autowired
-    private final FilmDao filmDao;
-    @Autowired
     private final JdbcTemplate jdbcTemplate;
-    @Autowired
-    private final FilmDBStorage filmDBStorage;
     @Autowired
     private final FilmController filmController;
     @Autowired

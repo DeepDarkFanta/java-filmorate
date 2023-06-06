@@ -31,15 +31,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Sql({"/sql/schemaTest.sql"})
 @Sql({"/sql/schema.sql"})
 public class UserDBStorageTest {
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private final UserController userController;
+
     @Autowired
     private final JdbcTemplate jdbcTemplate;
+
     ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
     private User user;
 
     @BeforeEach
@@ -113,7 +118,6 @@ public class UserDBStorageTest {
         User user1 = jdbcTemplate.query(
                 "SELECT * FROM USERS WHERE ID = 1",
                 new BeanPropertyRowMapper<>(User.class)).get(0);
-        System.out.println(user1.getName());
         assertThat(
                 jdbcTemplate.query(
                         "SELECT * FROM USERS WHERE ID = 1",

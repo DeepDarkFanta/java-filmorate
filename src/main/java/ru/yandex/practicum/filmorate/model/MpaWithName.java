@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class MpaWithName {
     private Long id;
+
     private String name;
 }
