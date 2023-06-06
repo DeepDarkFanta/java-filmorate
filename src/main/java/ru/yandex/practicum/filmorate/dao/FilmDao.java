@@ -14,5 +14,5 @@ public interface FilmDao {
     Genre getGenreById(Long id);
     List<MpaWithName>  getAllMpa();
     MpaWithName getMpaById(Long id);
-    Mpa getMpaByFilmId(Long filmId);
+    MpaWithName getMpaByFilmId(Long filmId);
 }

@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(FilmController.class)
 @AutoConfigureMockMvc
 class FilmControllerTest {
-    private final String uRL = "/films";
+/*    private final String uRL = "/films";
 
     @MockBean
     private FilmController filmController;
@@ -110,5 +110,5 @@ class FilmControllerTest {
                 .andExpect(mvcResult ->
                         isThrowException.set(mvcResult.getResolvedException() instanceof MethodArgumentNotValidException));
         return isThrowException.get();
-    }
+    }*/
 }

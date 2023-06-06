@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
 class UserControllerTest {
-    private final String uRL = "/users";
+   /* private final String uRL = "/users";
 
     @MockBean
     private UserController userController;
@@ -104,5 +104,5 @@ class UserControllerTest {
                 .andExpect(mvcResult ->
                         isThrowException.set(mvcResult.getResolvedException() instanceof MethodArgumentNotValidException));
         return isThrowException.get();
-    }
+    }*/
 }

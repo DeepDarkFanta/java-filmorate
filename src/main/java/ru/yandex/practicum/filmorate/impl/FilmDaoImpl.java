@@ -21,11 +21,10 @@ public class FilmDaoImpl implements FilmDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     @Override
     public Film getFilmById(Long filmId) {
             Film film = jdbcTemplate.query(
-                    "SELECT * FROM FILM WHERE ID = ?",
+                    "SELECT * FROM FILM WHERE ID = ?;",
                     FILM,
                     filmId
             ).get(0);
@@ -33,7 +32,7 @@ public class FilmDaoImpl implements FilmDao {
                 getGenresByFilmId(filmId)
         );
         film.setMpa(
-                getMpaByFilmId(filmId)
+                getMpaById(film.getMpaId())
         );
         return film;
     }
@@ -44,7 +43,7 @@ public class FilmDaoImpl implements FilmDao {
                 new BeanPropertyRowMapper<>(Genres.class);
 
         return jdbcTemplate.query(
-                "SELECT GENREID As id FROM FILM_GENRE WHERE FILMID = ?;",
+                "SELECT GENREID As id, d.name As name FROM FILM_GENRE LEFT JOIN GENRE As d WHERE genreId = d.ID AND filmId = ?;",
                 genresBeanPropertyRowMapper,
                 filmId
         );
@@ -60,17 +59,24 @@ public class FilmDaoImpl implements FilmDao {
 
     @Override
     public void deleteLike(Long id, Long userId) {
-        jdbcTemplate.update(
+        int response = jdbcTemplate.update(
                 "DELETE FROM LIKES WHERE FILMID = ? AND USERID = ?",
                 id, userId
         );
+        if (response == 0) throw new ValidationException("there is no such id");
     }
 
     @Override
     public List<Film> getTopFilms(int count) {
         List<Film> films = jdbcTemplate.query(
-                "SELECT * FROM FILM WHERE ID IN (SELECT FILMID FROM LIKES" +
-                        " GROUP BY FILMID ORDER BY COUNT(USERID) desc LIMIT ?);",
+                /*"SELECT * FROM FILM WHERE ID IN (SELECT FILMID FROM LIKES" +
+                        " GROUP BY FILMID ORDER BY COUNT(USERID) desc LIMIT ?);"*/
+                "SELECT film.*\n" +
+                        "FROM film\n" +
+                        "         INNER JOIN likes ON film.id = likes.filmId\n" +
+                        "GROUP BY film.id\n" +
+                        "ORDER BY COUNT(likes.filmId) DESC\n" +
+                        "LIMIT ?;",
                 FILM,
                 count
         );
@@ -78,7 +84,7 @@ public class FilmDaoImpl implements FilmDao {
             List<Genres> genres = getGenresByFilmId(film.getId());
             film.setGenres(genres);
             film.setMpa(
-                    getMpaByFilmId(film.getId())
+                    getMpaById(film.getMpaId())
             );
         }
         return films;
@@ -111,17 +117,17 @@ public class FilmDaoImpl implements FilmDao {
     public MpaWithName getMpaById(Long id) {
         BeanPropertyRowMapper<MpaWithName> mpa = new BeanPropertyRowMapper<>(MpaWithName.class);
         return jdbcTemplate.query(
-                "SELECT * FROM MPA_TYPE WHERE ID = ?",
+                "SELECT * FROM MPA_TYPE WHERE ID = ?;",
                 mpa,
                 id
         ).get(0);
     }
 
     @Override
-    public Mpa getMpaByFilmId(Long filmId) {
+    public MpaWithName getMpaByFilmId(Long filmId) {
         return jdbcTemplate.query(
-                "SELECT MPAID As id FROM FILM WHERE ID = ?",
-                new BeanPropertyRowMapper<>(Mpa.class),
+                "SELECT MPAID As id, MPA_TYPE.NAME As name FROM FILM, MPA_TYPE WHERE FILM.ID = ?;",
+                new BeanPropertyRowMapper<>(MpaWithName.class),
                 filmId
         ).get(0);
     }

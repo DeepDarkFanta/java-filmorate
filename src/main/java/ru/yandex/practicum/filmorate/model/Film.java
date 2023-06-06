@@ -23,11 +23,7 @@ public class Film {
 
     @Positive
     private int duration;
-    private Set<Integer> likes;
-    private  Mpa mpa;
+    private  MpaWithName mpa;
     private Long mpaId;
-    //private Genres genres = new Genres();
     private List<Genres> genres = new ArrayList<>();
-    //private Map<String, Long> mpa;
-    //private Map<String, Long> genres;
 }

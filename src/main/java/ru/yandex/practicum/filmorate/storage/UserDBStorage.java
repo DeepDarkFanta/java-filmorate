@@ -8,10 +8,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.util.exception.UserAndFilmErrorResponse;
 import ru.yandex.practicum.filmorate.util.exception.ValidationException;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -29,7 +27,7 @@ public class UserDBStorage implements UserStorage {
     public User addUser(User user) {
         if (user.getName().isEmpty()) user.setName(user.getLogin());
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("user")
+                .withTableName("users")
                 .usingGeneratedKeyColumns("id");
         SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
         user.setId(jdbcInsert.executeAndReturnKey(parameterSource).longValue());
@@ -38,7 +36,7 @@ public class UserDBStorage implements UserStorage {
 
     @Override
     public User updateUser(User user) {
-        String sql = "UPDATE USER SET" +
+        String sql = "UPDATE USERS SET" +
                 " email = ?, login = ?, name = ?, BIRTHDAY = ?" +
                 " WHERE id = ?";
 
@@ -55,7 +53,7 @@ public class UserDBStorage implements UserStorage {
 
     @Override
     public List<User> getAllUsers() {
-        return jdbcTemplate.query("SELECT * FROM USER", USER);
+        return jdbcTemplate.query("SELECT * FROM USERS", USER);
 
     }
 }

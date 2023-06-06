@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.dao.FilmDao;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genres;
-import ru.yandex.practicum.filmorate.model.Mpa;
+import ru.yandex.practicum.filmorate.model.MpaWithName;
 import ru.yandex.practicum.filmorate.util.exception.ValidationException;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -21,7 +24,6 @@ public class FilmDBStorage implements FilmStorage {
             BeanPropertyRowMapper.newInstance(Film.class);
 
     private final FilmDao filmDao;
-
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -43,7 +45,13 @@ public class FilmDBStorage implements FilmStorage {
                 .executeAndReturnKey(parameterSource)
                 .longValue()
         );
+        film.setMpa(
+                filmDao.getMpaByFilmId(film.getId())
+        );
         updateFilmGenre(film);
+        film.setGenres(
+                filmDao.getGenresByFilmId(film.getId())
+        );
         jdbcTemplate.update(
                 "INSERT INTO LIKES (FILMID) VALUES ( ? );",
                 film.getId()
@@ -54,6 +62,10 @@ public class FilmDBStorage implements FilmStorage {
     @Override
     public Film updateFilm(Film film) {
         //TODO: update genres
+        updateFilmGenre(film);
+        film.setGenres(
+                filmDao.getGenresByFilmId(film.getId())
+        );
         int check = jdbcTemplate.update(
                 "UPDATE FILM SET NAME = ?, DESCRIPTION = ?, RELEASEDATE = ?," +
                         " DURATION = ?, MPAID = ? WHERE ID = ?",
@@ -64,7 +76,6 @@ public class FilmDBStorage implements FilmStorage {
                 film.getMpa().getId(),
                 film.getId()
         );
-        updateFilmGenre(film);
         if (check == 0) throw new ValidationException("there is no such id = " + film.getId());
         return film;
     }
@@ -77,7 +88,9 @@ public class FilmDBStorage implements FilmStorage {
         );
         for (Film film : films) {
             List<Genres> genres = filmDao.getGenresByFilmId(film.getId());
-            Mpa mpa = filmDao.getMpaByFilmId(film.getId());
+            MpaWithName mpa = filmDao.getMpaById(
+                    film.getMpaId()
+            );
             film.setGenres(genres);
             film.setMpa(mpa);
         }
@@ -85,25 +98,53 @@ public class FilmDBStorage implements FilmStorage {
     }
 
     private void updateFilmGenre(Film film) {
+        if (film.getGenres().size() == 0) {
+            jdbcTemplate.update(
+                    "DELETE FROM FILM_GENRE WHERE FILMID = ?",
+                    film.getId()
+            );
+            return;
+        }
         jdbcTemplate.update(
-                "DELETE FROM FILM_GENRE WHERE FILMID  = ?",
+                "DELETE FROM FILM_GENRE WHERE FILMID = ?",
                 film.getId()
         );
-        if (film.getGenres().isEmpty()) return;
-        StringBuilder sqlBuilderFilmGenres = new StringBuilder("INSERT INTO FILM_GENRE (FILMID, GENREID) VALUES ");
-        for (Genres genre : film.getGenres()) {
-            sqlBuilderFilmGenres.append("(")
-                    .append(film.getId())
-                    .append(", ")
-                    .append(genre.getId())
-                    .append("),");
-        }
-        sqlBuilderFilmGenres
-                .deleteCharAt(sqlBuilderFilmGenres.length() - 1)
-                .append(";");
-        System.out.println(sqlBuilderFilmGenres);
-        jdbcTemplate.update(
-                sqlBuilderFilmGenres.toString()
+        //Странно конечно что когда некорректный запрос на апдейт приходит с повторяющимися индексами, то мы его обрабатываем
+        //логичнее было бы сделать как я. Удалить все жанры которые не входят в новый объект с контроллера, а потом сделать вставку
+        /*jdbcTemplate.batchUpdate(
+                "DELETE FROM FILM_GENRE WHERE FILMID NOT IN " +
+                        "(SELECT FILMID FROM FILM_GENRE As t WHERE t.FILMID = ? AND t.GENREID = ?) AND GENREID = ?;",
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setLong(1, film.getGenres().get(i).getId());
+                        ps.setLong(2, film.getId());
+                        ps.setLong(3, film.getGenres().get(i).getId());
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return film.getGenres().size();
+                    }
+                });*/
+
+        jdbcTemplate.batchUpdate(
+                " MERGE INTO FILM_GENRE USING (SELECT ZERO() + (SELECT GENREID FROM FILM_GENRE WHERE GENREID = ?" +
+                        " AND FILMID = ?) AS b) As t ON (t.b IS NOT NULL ) WHEN NOT MATCHED THEN INSERT(FILMID, GENREID) VALUES (?, ?);",
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setLong(1, film.getGenres().get(i).getId());
+                        ps.setLong(2, film.getId());
+                        ps.setLong(3, film.getId());
+                        ps.setLong(4, film.getGenres().get(i).getId());
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return film.getGenres().size();
+                    }
+                }
         );
     }
 }
