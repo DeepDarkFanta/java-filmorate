@@ -71,7 +71,7 @@ public class FilmDBStorageTest {
     }
 
     @Test
-    public void addFilmTest() throws Exception{
+    public void addFilmTest() throws Exception {
         String result = objectMapper.writeValueAsString(film);
         mockMvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
