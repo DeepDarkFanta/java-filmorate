@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Sql({"/sql/schemaTest.sql"})
-@Sql({"/sql/schema.sql"})
+@Sql({"/schema.sql"})
 public class UserDBStorageTest {
     @Autowired
     private MockMvc mockMvc;

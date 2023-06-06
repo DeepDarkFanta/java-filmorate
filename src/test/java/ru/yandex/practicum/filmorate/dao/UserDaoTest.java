@@ -22,7 +22,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureMockMvc
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Sql({"/sql/schemaTest.sql"})
-@Sql({"/sql/schema.sql"})
+@Sql({"/schema.sql"})
 public class UserDaoTest {
     @Autowired
     private final UserController userController;

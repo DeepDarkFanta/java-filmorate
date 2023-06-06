@@ -24,7 +24,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureMockMvc
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Sql({"/sql/schemaTest.sql"})
-@Sql({"/sql/schema.sql"})
+@Sql({"/schema.sql"})
 public class FilmDaoTest {
     @Autowired
     private final JdbcTemplate jdbcTemplate;
