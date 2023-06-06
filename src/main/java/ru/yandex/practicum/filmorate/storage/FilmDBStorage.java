@@ -20,7 +20,7 @@ import java.util.List;
 
 @Repository
 public class FilmDBStorage implements FilmStorage {
-    private final BeanPropertyRowMapper<Film> FILM =
+    private static final BeanPropertyRowMapper<Film> FILM =
             BeanPropertyRowMapper.newInstance(Film.class);
 
     private final FilmDao filmDao;
