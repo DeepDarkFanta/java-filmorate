@@ -34,14 +34,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void addFriend(Long id, Long idFriend) {// 1 -> 2, 2 -> 1
+    public void addFriend(Long id, Long idFriend) {
         try {
             jdbcTemplate.update(
                     "MERGE INTO FRIENDS_STATUS USING (SELECT ZERO() + (SELECT FRIEND_ONE_ID FROM FRIENDS_STATUS" +
                             " WHERE (FRIEND_ONE_ID = ? AND FRIEND_TWO_ID = ?) OR (FRIEND_ONE_ID = ? AND FRIEND_TWO_ID = ?)) As b) As r" +
                             " ON (r.b IS NOT NULL AND r.b <> ?) WHEN MATCHED THEN UPDATE SET STATUS = 2 WHEN NOT MATCHED THEN INSERT(" +
-                            "FRIEND_ONE_ID, FRIEND_TWO_ID, STATUS) VALUES (?,?,1)"
-                    , id, idFriend, idFriend, id, id, id, idFriend
+                            "FRIEND_ONE_ID, FRIEND_TWO_ID, STATUS) VALUES (?,?,1)",
+                    id, idFriend, idFriend, id, id, id, idFriend
             );
         } catch (Throwable e) {
             throw new ValidationException("There is no such id");
