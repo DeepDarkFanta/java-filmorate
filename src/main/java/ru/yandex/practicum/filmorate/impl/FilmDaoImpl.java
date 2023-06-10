@@ -71,7 +71,8 @@ public class FilmDaoImpl implements FilmDao {
     public List<Film> getTopFilms(int count) {
         List<Film> films = jdbcTemplate.query(
                 "SELECT * FROM FILM where FILM.ID IN (SELECT FILMID FROM LIKES GROUP BY FILMID" +
-                        " ORDER BY COUNT(FILMID) desc LIMIT ?);",
+                        " ORDER BY COUNT(FILMID) desc LIMIT ?) ORDER BY (SELECT COUNT(FILMID) FROM LIKES" +
+                        " WHERE FILM.ID = LIKES.FILMID GROUP BY FILMID ) DESC;",
                 FILM,
                 count
         );
