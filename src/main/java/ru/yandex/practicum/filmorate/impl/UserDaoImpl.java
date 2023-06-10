@@ -27,8 +27,10 @@ public class UserDaoImpl implements UserDao {
     public User getUserById(long id) {
         String sql = "SELECT * FROM USERS WHERE id = ?";
         try {
-            return jdbcTemplate.query(sql, USER, id).get(0);
-        } catch (EmptyResultDataAccessException  | NullPointerException e) {
+            List<User> users = jdbcTemplate.query(sql, USER, id);
+            if (users.isEmpty()) throw new ValidationException("There is no such ID =" + id + " user");
+            return users.get(0);
+        } catch (EmptyResultDataAccessException e) {
             throw new ValidationException("There is no such ID =" + id + " user");
         }
     }

@@ -64,20 +64,14 @@ public class FilmDaoImpl implements FilmDao {
                 "DELETE FROM LIKES WHERE FILMID = ? AND USERID = ?",
                 id, userId
         );
-        if (response == 0) throw new ValidationException("there is no such id");
+        if (response == 0) throw new ValidationException("Something was wrong");
     }
 
     @Override
     public List<Film> getTopFilms(int count) {
         List<Film> films = jdbcTemplate.query(
-                /*"SELECT * FROM FILM WHERE ID IN (SELECT FILMID FROM LIKES" +
-                        " GROUP BY FILMID ORDER BY COUNT(USERID) desc LIMIT ?);"*/
-                "SELECT film.*\n" +
-                        "FROM film\n" +
-                        "         INNER JOIN likes ON film.id = likes.filmId\n" +
-                        "GROUP BY film.id\n" +
-                        "ORDER BY COUNT(likes.filmId) DESC\n" +
-                        "LIMIT ?;",
+                "SELECT * FROM FILM where FILM.ID IN (SELECT FILMID FROM LIKES GROUP BY FILMID" +
+                        " ORDER BY COUNT(FILMID) desc LIMIT ?);",
                 FILM,
                 count
         );
