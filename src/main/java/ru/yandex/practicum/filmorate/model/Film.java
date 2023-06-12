@@ -1,18 +1,16 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import ru.yandex.practicum.filmorate.util.annotation.FutureFrom;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-@Data
-@Builder
+@Setter
+@Getter
 public class Film {
-    private int id;
+    private Long id;
 
     @NotBlank(message = "name cannot be empty")
     private String name;
@@ -26,5 +24,9 @@ public class Film {
     @Positive
     private int duration;
 
-    private final Set<Integer> likes = new HashSet<>();
+    private  MpaWithName mpa;
+
+    private Long mpaId;
+
+    private List<Genres> genres = new ArrayList<>();
 }

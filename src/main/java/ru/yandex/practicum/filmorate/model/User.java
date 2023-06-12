@@ -1,18 +1,18 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@Builder
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
-    private int id;
-    private final Set<Integer> friends = new HashSet<>();
+    private long id;
+
+    private Set<Integer> friends;
 
     @NotBlank(message = "email cannot be empty")
     @Email(message = "must contain the @ symbol")
@@ -24,5 +24,6 @@ public class User {
     private String name;
 
     @Past(message = "date of birth cannot be in the future")
+
     private LocalDate birthday;
 }

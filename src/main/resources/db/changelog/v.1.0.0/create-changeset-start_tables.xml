@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="create_tables" author="mediaSoft">
+        <createTable tableName="users">
+        <column autoIncrement="true" name="id" type="bigint">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+            <column name="birthday" type="DATE">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="login" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE users ADD CONSTRAINT birthday_not_in_future
+                CHECK (birthday <![CDATA[<]]> CAST(NOW() AS DATE));
+        </sql>
+
+        <createTable tableName="mpa_type">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR">
+            </column>
+        </createTable>
+
+        <createTable tableName="film">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR">
+            </column>
+            <column name="releaseDate" type="DATE">
+            </column>
+            <column name="duration" type="INTEGER">
+            </column>
+            <column name="mpaId" type="bigint">
+                <!--check this -->
+                <constraints foreignKeyName="film_mpaId_mpa_type" references="mpa_type(id)"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE film ADD CONSTRAINT positive_number CHECK ( duration > 0 );
+        </sql>
+
+        <createTable tableName="genre">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR">
+            </column>
+        </createTable>
+
+        <createTable tableName="friends_status">
+            <column name="friend_one_id" type="bigint">
+                <constraints foreignKeyName="id_user_one_users" references="users(id)"/>
+            </column>
+            <column name="friend_two_id" type="bigint">
+                <constraints foreignKeyName="id_user_two_users" references="users(id)"/>
+            </column>
+            <column name="status" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="friends_status" columnNames="friend_one_id, friend_two_id" />
+       <!-- <sql>
+            ALTER TABLE ADD CONSTRAINT unique_friend_pair UNIQUE(friend_one_id, friend_two_id)
+        </sql>-->
+
+        <createTable tableName="likes">
+            <column name="filmId" type="bigint">
+                <constraints foreignKeyName="id_film_likes" references="film(id)"/>
+            </column>
+            <column name="userId" type="INTEGER" defaultValue="null">
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE likes ADD CONSTRAINT   userId FOREIGN KEY (userId) REFERENCES users (id);
+        </sql>
+
+        <createTable tableName="film_genre">
+            <column name="filmId" type="bigint">
+                <constraints foreignKeyName="id_film_film_genre" references="film(id)"/>
+            </column>
+            <column name="genreId" type="bigint">
+                <constraints foreignKeyName="id_genreId_genre" references="genre(id)"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="film_genre" columnNames="filmId, genreId"/>
+        <!-- add genres -->
+        <sql>
+            INSERT INTO GENRE (NAME) VALUES ('Комедия');
+            INSERT INTO GENRE (NAME) VALUES ('Драма');
+            INSERT INTO GENRE (NAME) VALUES ('Мультфильм');
+            INSERT INTO GENRE (NAME) VALUES ('Триллер');
+            INSERT INTO GENRE (NAME) VALUES ('Документальный');
+            INSERT INTO GENRE (NAME) VALUES ('Боевик');
+        </sql>
+
+        <!--- add mpa -->
+        <sql>
+            INSERT INTO MPA_TYPE (NAME) VALUES ( 'G' );
+            INSERT INTO MPA_TYPE (NAME) VALUES ( 'PG' );
+            INSERT INTO MPA_TYPE (NAME) VALUES ( 'PG-13' );
+            INSERT INTO MPA_TYPE (NAME) VALUES ( 'R' );
+            INSERT INTO MPA_TYPE (NAME) VALUES ( 'NC-17' );
+        </sql>
+    </changeSet>
+        </databaseChangeLog>
+
+
+<!--
+CREATE TABLE IF NOT EXISTS PUBLIC.users(
+    id BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    birthday DATE,
+    login VARCHAR,
+    name VARCHAR,
+    email VARCHAR
+    CONSTRAINT birthday_not_in_future CHECK (birthday < CAST(NOW() AS DATE))
+);-->

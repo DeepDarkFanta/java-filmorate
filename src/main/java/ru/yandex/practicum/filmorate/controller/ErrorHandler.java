@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.util.exception.UserAndFilmErrorResponse;
 import ru.yandex.practicum.filmorate.util.exception.ValidationException;
-
 import java.util.stream.Collectors;
 
 @RestControllerAdvice("ru.yandex.practicum.filmorate.controller")
@@ -20,10 +19,12 @@ public class ErrorHandler {
     private UserAndFilmErrorResponse handleValidationException(MethodArgumentNotValidException e) {
         log.warn(e.getMessage());
 
-         return new UserAndFilmErrorResponse(e.getAllErrors().stream()
+         return new UserAndFilmErrorResponse(
+                 e.getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList())
-                .toString());
+                .toString()
+         );
     }
 
     @ExceptionHandler
@@ -32,4 +33,12 @@ public class ErrorHandler {
         log.warn(e.getMessage());
         return new UserAndFilmErrorResponse(e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private UserAndFilmErrorResponse handleNotFoundExceptionInBase(IndexOutOfBoundsException e) {
+        log.warn(e.getMessage());
+        return new UserAndFilmErrorResponse(e.getMessage());
+    }
 }
+
