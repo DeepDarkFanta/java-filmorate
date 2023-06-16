@@ -37,19 +37,19 @@ service endpoints are described below.
 
 `PUT /users`
 
-### Response
+### Request
 
 ```
 {
-  "id": 1,
-  "login": "doloreUpdate",
-  "name": "est adipisicing",
-  "email": "mail@yandex.ru",
-  "birthday": "1976-09-20"
+    "id": 1,
+    "login": "doloreUpdate",
+    "name": "est adipisicing",
+    "email": "mail@yandex.ru",
+    "birthday": "1976-09-20"
 }
 ```
 
-### Request
+### Response
 
 ```
 {
@@ -61,6 +61,134 @@ service endpoints are described below.
     "birthday": "1976-09-20"
 }
 ```
+## Get all Users
+
+`GET /users`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/users/`
+
+### Response
+
+```
+[
+    {
+        "id": 1,
+        "friends": [],
+        "email": "mail@yandex.ru",
+        "login": "doloreUpdate",
+        "name": "est adipisicing",
+        "birthday": "1976-09-20"
+    },
+    {
+        "id": 2,
+        "friends": [],
+        "email": "friend@mail.ru",
+        "login": "friend",
+        "name": "friend adipisicing",
+        "birthday": "1976-08-20"
+    }
+]
+```
+
+## Get User by id
+
+`GET /users/{id}`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/users/1`
+
+### Response
+
+```
+{
+    "id": 1,
+    "friends": [],
+    "email": "mail@yandex.ru",
+    "login": "doloreUpdate",
+    "name": "est adipisicing",
+    "birthday": "1976-09-20"
+}
+```
+## Add user as friend
+
+`PUT {id}/friends/{friendId}`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/users/1/friends/2`
+
+### Response
+```
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Content-Length: 0
+```
+## Delete user as friend
+
+`DELETE {id}/friends/{friendId}`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/users/1/friends/2`
+
+### Response
+```
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Content-Length: 0
+```
+
+## Get User's friends 
+
+`GET /users/{id}/friends`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/users/1`
+
+### Response
+
+```
+[
+    {
+        "id": 2,
+        "friends": [1],
+        "email": "friend@mail.ru",
+        "login": "friend",
+        "name": "friend adipisicing",
+        "birthday": "1976-08-20"
+    }
+]
+```
+
+## Get common friends
+
+`GET /{id}/friends/common/{otherId}`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/users/1/friends/common/2`
+
+### Response
+
+```
+[
+    {
+        "id": 3,
+        "friends": [1,2],
+        "email": "friend@common.ru",
+        "login": "common",
+        "name": "common",
+        "birthday": "2000-08-20"
+    }
+]
+```
+
 # database schema
 
 <img width="809" alt="image" src="https://github.com/DeepDarkFanta/java-filmorate/assets/71662572/59ae0308-b665-4137-bfae-de8dccdec3e1">
