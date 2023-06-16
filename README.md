@@ -10,6 +10,7 @@ REST API service providing information about movies, TV series. Users of the ser
 - get top movies made by likes
 - get genres
 - get mpa
+- get film/user/mpa/genre by id 
 
 # tech stack:
 - Java 11
