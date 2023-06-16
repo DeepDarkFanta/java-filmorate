@@ -16,6 +16,7 @@ REST API service providing information about movies, TV series. Users of the ser
 - Java 11
 - Spring Boot 2.7.2
 - H2, JDBC, Liquibase
+- AssertJ, Junit, Mockito
 
 # database schema
 
