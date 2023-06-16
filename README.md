@@ -1,6 +1,10 @@
 # REST API java-filmorate
 REST API service providing information about movies, TV series. Users of the service can rate films, add each other as friends.
 
+# database schema
+
+<img width="809" alt="image" src="https://github.com/DeepDarkFanta/java-filmorate/assets/71662572/59ae0308-b665-4137-bfae-de8dccdec3e1">
+
 # REST API
 
 service endpoints are described below.
@@ -393,7 +397,7 @@ service endpoints are described below.
 ]
 ```
 
-# Genres comtrollers
+# Genres controllers
 
 ## Get all genres
 
@@ -504,7 +508,3 @@ service endpoints are described below.
     "name": "G"
 }
 ```
-
-# database schema
-
-<img width="809" alt="image" src="https://github.com/DeepDarkFanta/java-filmorate/assets/71662572/59ae0308-b665-4137-bfae-de8dccdec3e1">
