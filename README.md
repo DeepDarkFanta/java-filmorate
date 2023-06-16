@@ -5,6 +5,8 @@ REST API service providing information about movies, TV series. Users of the ser
 
 service endpoints are described below.
 
+# User controllers
+
 ## Create User
 
 ### Request
@@ -187,6 +189,320 @@ service endpoints are described below.
         "birthday": "2000-08-20"
     }
 ]
+```
+
+# Film controllers
+
+## Add film
+
+`POST /films`
+
+### Request
+
+```
+{
+  "name": "nisi eiusmod",
+  "description": "adipisicing",
+  "releaseDate": "1967-03-25",
+  "duration": 100,
+  "mpa": { "id": 1}
+}
+```
+
+### Response
+
+```
+{
+    "id": 1,
+    "name": "nisi eiusmod",
+    "description": "adipisicing",
+    "releaseDate": "1967-03-25",
+    "duration": 100,
+    "mpa": {
+        "id": 1,
+        "name": "G"
+    },
+    "mpaId": 1,
+    "genres": []
+}
+```
+
+## Update film
+
+`PUT /films`
+
+### Request
+
+```
+{
+    "id": 1,
+    "name": "Film Updated",
+    "releaseDate": "1989-04-17",
+    "description": "New film update decription",
+    "duration": 190,
+    "mpa": { "id": 2}
+}
+```
+### Response 
+```
+{
+    "id": 1,
+    "name": "Film Updated",
+    "description": "New film update decription",
+    "releaseDate": "1989-04-17",
+    "duration": 190,
+    "mpa": {
+        "id": 2,
+        "name": PG
+    },
+    "genres": []
+}
+```
+
+## Get all films
+
+`GET /films`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/films`
+
+### Response
+
+```
+[
+    {
+        "id": 1,
+        "name": "Film Updated",
+        "description": "New film update decription",
+        "releaseDate": "1989-04-17",
+        "duration": 190,
+        "mpa": {
+            "id": 2,
+            "name": "PG"
+        },
+        "mpaId": 2,
+        "genres": []
+    }
+]
+```
+
+## Get film by id
+
+`GET /folms/{id}`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/films/1`
+
+### Response
+
+```
+{
+    "id": 1,
+    "name": "Film Updated",
+    "description": "New film update decription",
+    "releaseDate": "1989-04-17",
+    "duration": 190,
+    "mpa": {
+        "id": 2,
+        "name": "PG"
+    },
+    "mpaId": 2,
+    "genres": []
+}
+```
+
+## give the film a like
+
+`PUT /films/{id}/like/{userId}`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/films/1/like/1`
+
+### Response
+
+```
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Content-Length: 0
+```
+
+## Delete like from film
+
+`DELETE /films/{id}/like/{userId}`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/films/1/like/1`
+
+### Response
+
+```
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Content-Length: 0
+```
+
+##  Get the specified number of top movies
+
+`GET /films/popular?count=`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/films/popular/count=2`
+
+### Response
+
+```
+[
+    {
+        "id": 1,
+        "name": "Film Updated",
+        "description": "New film update decription",
+        "releaseDate": "1989-04-17",
+        "duration": 190,
+        "mpa": {
+            "id": 2,
+            "name": "PG"
+        },
+        "mpaId": 2,
+        "genres": []
+    },
+    {
+        "id": 2,
+        "name": "New film",
+        "description": "New film about friends",
+        "releaseDate": "1999-04-30",
+        "duration": 120,
+        "mpa": {
+            "id": 3,
+            "name": "PG-13"
+        },
+        "mpaId": 3,
+        "genres": [
+            {
+                "id": 1,
+                "name": "Комедия"
+            }
+        ]
+    }
+]
+```
+
+# Genres comtrollers
+
+## Get all genres
+
+`GET /genres`
+
+### Request
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/genres`
+
+### Response 
+
+```
+[
+    {
+        "id": 1,
+        "name": "Комедия"
+    },
+    {
+        "id": 2,
+        "name": "Драма"
+    },
+    {
+        "id": 3,
+        "name": "Мультфильм"
+    },
+    {
+        "id": 4,
+        "name": "Триллер"
+    },
+    {
+        "id": 5,
+        "name": "Документальный"
+    },
+    {
+        "id": 6,
+        "name": "Боевик"
+    }
+]
+```
+
+## get genre by id
+
+`GET /genres/{id}`
+
+### Request 
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/genres/1`
+
+### Response
+
+```
+{
+    "id": 1,
+    "name": "Комедия"
+}
+```
+
+# MPA controllers
+
+## Get alll MPA
+
+`GET /mpa`
+
+### Request 
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/mpa`
+
+### Response
+
+```
+[
+    {
+        "id": 1,
+        "name": "G"
+    },
+    {
+        "id": 2,
+        "name": "PG"
+    },
+    {
+        "id": 3,
+        "name": "PG-13"
+    },
+    {
+        "id": 4,
+        "name": "R"
+    },
+    {
+        "id": 5,
+        "name": "NC-17"
+    }
+]
+```
+
+## Get mpa by id
+
+`GET /mpa/{id}`
+
+### Request 
+
+`curl -i -H 'Accept: application/json' http://localhost:8080/mpa/1`
+
+### Response 
+
+```
+{
+    "id": 1,
+    "name": "G"
+}
 ```
 
 # database schema
