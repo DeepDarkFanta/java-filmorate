@@ -1,5 +1,20 @@
-# REST API java-filmorate
+# REST API/MVC java-filmorate
 REST API service providing information about movies, TV series. Users of the service can rate films, add each other as friends.
+# service features:
+- adding/update users
+- adding/update films
+- add/remove friends
+- get common friends
+- like films
+- remove likes from films
+- get top movies made by likes
+- get genres
+- get mpa
+
+# tech stack:
+- Java 11
+- Spring Boot 2.7.2
+- H2, JDBC, Liquibase
 
 # database schema
 
